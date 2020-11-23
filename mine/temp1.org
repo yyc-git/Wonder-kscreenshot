@@ -1,0 +1,27 @@
+* DONE mouseup should cancel
+
+reset
+
+
+* DONE screenshot parent should hide child
+
+
+
+
+* DONE pass screenshot child
+
+
+* DONE refactor
+
+
+* DONE pass tool
+
+
+* DONE insert css(should insert only once!) to parent when init!
+
+* TODO create github
+
+* TODO publish npm
+
+
+* TODO test in cloud deskstop
