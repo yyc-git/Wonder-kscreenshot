@@ -19,9 +19,11 @@ reset
 
 * DONE insert css(should insert only once!) to parent when init!
 
-* TODO create github
+* DONE create github
 
-* TODO publish npm
+* DONE publish npm
 
 
 * TODO test in cloud deskstop
+
+

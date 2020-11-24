@@ -38,6 +38,12 @@
 
         kss.setContainerDocument(_getParent().document);
 
+        kss.setCanvasHandler((self, canvas) => {
+            canvas.style.top = `${-_getParent().document.documentElement.scrollTop}px`;
+
+            return canvas;
+        });
+
         kss.init();
 
         _getIMFrame().style.display = "none";
@@ -86,7 +92,7 @@
             let top = Number(_getIMFrame().style.top.slice(0, -2));
             let left = Number(_getIMFrame().style.left.slice(0, -2));
 
-            ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, left, top, canvas.width, canvas.height);
+            ctx.drawImage(canvas, 0, document.documentElement.scrollTop, canvas.width, canvas.height, left, top, canvas.width, canvas.height);
 
             return wholeCanvas;
         });
@@ -100,8 +106,8 @@
 
     function startup() {
         document.querySelector("#button").onclick = (e) => {
-            // _screenshotIM();
-            _screenshotParent();
+            _screenshotIM();
+            // _screenshotParent();
         }
     }
 

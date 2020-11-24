@@ -1,7 +1,7 @@
 
 // import {a} from './toolbar.js'
-// import html2canvas from './html2canvas.min.js'
-import domtoimage from './dom-to-image.js'
+import html2canvas from './html2canvas.js'
+// import domtoimage from './dom-to-image.js'
 import { css, remove, domType, addClass, typeChecking, loadCssCode } from './util'
 import createDragDom from './createDragDom.js'
 import createToolbar from './toolbar/toolbar.js'
@@ -572,26 +572,28 @@ let kss = (function () {
         }
         that.isScreenshot = true
 
-        // html2canvas(window.wonder_containerDocument.body, {useCORS:true, scrollY:200})
-        domtoimage.toCanvas(that._node)
+        // domtoimage.toCanvas(that._node, {
+        // scrollFix:true
+        //         })
+        html2canvas(that._node, {})
             .then((canvas) => {
                 return this._canvasHandlerFunc === undefined ? canvas : this._canvasHandlerFunc(canvas);
             })
             .then((canvas) => {
                 that.kss = canvas
-                that.scrollTop = that._document.documentElement.scrollTop
+                // that.scrollTop = that._document.documentElement.scrollTop
                 canvas.id = 'kss'
 
                 that._container.appendChild(canvas)
 
                 addClass(that._container, 'kssBody')
 
-                let top = -that.scrollTop;
-                let left = 0;
-                css(canvas, {
-                    top: `${top}px`,
-                    left: `${left}px`,
-                })
+                // let top = -that.scrollTop;
+                // let left = 0;
+                // css(canvas, {
+                //     top: `${top}px`,
+                //     left: `${left}px`,
+                // })
 
                 canvas.addEventListener('mousedown', that.startDrawDown)
             })
