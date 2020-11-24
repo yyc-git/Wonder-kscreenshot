@@ -582,7 +582,10 @@ let kss = (function () {
         // domtoimage.toCanvas(that._node, {
         // scrollFix:true
         //         })
-        html2canvas(that._node, {})
+        html2canvas(that._node, {
+            useCORS: true,
+            allowTaint: true
+        })
             .then((canvas) => {
                 return this._canvasHandlerFunc === undefined ? canvas : this._canvasHandlerFunc(canvas);
             })

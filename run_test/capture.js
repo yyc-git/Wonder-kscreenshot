@@ -12,6 +12,14 @@
         return _getParent().document.querySelector("iframe");
     };
 
+    let _getDomWidth = (dom) => {
+        return dom.offsetWidth;
+    }
+
+    let _getDomHeight = (dom) => {
+        return dom.offsetHeight;
+    }
+
     let _screenshotParent = () => {
         //65指键盘中的A
         let kss = new kscreenshot(
@@ -96,7 +104,7 @@
             let top = - _getParent().document.documentElement.scrollTop + Number(_getIMFrame().style.top.slice(0, -2));
             let left = Number(_getIMFrame().style.left.slice(0, -2));
 
-            ctx.drawImage(canvas, 0, document.documentElement.scrollTop, _getIMFrame().width, _getIMFrame().height, left, top, _getIMFrame().width, _getIMFrame().height);
+            ctx.drawImage(canvas, 0, document.documentElement.scrollTop, _getDomWidth(_getIMFrame()), _getDomWidth(_getIMFrame()), left, top, _getDomWidth(_getIMFrame()), _getDomHeight(_getIMFrame()));
 
             return wholeCanvas;
         });
@@ -110,8 +118,8 @@
 
     function startup() {
         document.querySelector("#button").onclick = (e) => {
-            _screenshotIM();
-            // _screenshotParent();
+            // _screenshotIM();
+            _screenshotParent();
         }
     }
 
