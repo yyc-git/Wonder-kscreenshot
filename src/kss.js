@@ -324,8 +324,11 @@ let kss = (function () {
     kss.prototype.init = function (key, immediately) {
         const that = this
 
-        loadCssCode(
-            `
+        if (window.wonder_isInsertKssCss !== true) {
+            window.wonder_isInsertKssCss = true;
+
+            loadCssCode(
+                `
 		.kssBody {
 			/* cursor: url("./assets/imgs/cursor.ico"), auto; */
 			user-select: none;
@@ -545,7 +548,8 @@ let kss = (function () {
 			display: inline-block;
 			vertical-align: middle;
 		}`
-        );
+            );
+        }
 
         if (immediately === true) {
             that.start()
