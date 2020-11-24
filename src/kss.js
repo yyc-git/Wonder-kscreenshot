@@ -313,9 +313,9 @@ let kss = (function () {
         this.setScrollTop = (scrollTop) => {
             this._scrollTop = scrollTop;
         }
-
-
-
+        this.setFinishHandler = (finishHandlerFunc) => {
+            this.finishHandlerFunc = finishHandlerFunc;
+        }
 
         // this.init(options.key, options.immediately)
         return instance = this
