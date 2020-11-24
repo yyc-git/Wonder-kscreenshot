@@ -310,6 +310,9 @@ let kss = (function () {
                 return canvasHandlerFunc(this, canvas);
             }
         }
+        this.setScrollTop = (scrollTop) => {
+            this._scrollTop = scrollTop;
+        }
 
 
 
@@ -581,19 +584,12 @@ let kss = (function () {
             })
             .then((canvas) => {
                 that.kss = canvas
-                // that.scrollTop = that._document.documentElement.scrollTop
+                that.scrollTop = this._scrollTop;
                 canvas.id = 'kss'
 
                 that._container.appendChild(canvas)
 
                 addClass(that._container, 'kssBody')
-
-                // let top = -that.scrollTop;
-                // let left = 0;
-                // css(canvas, {
-                //     top: `${top}px`,
-                //     left: `${left}px`,
-                // })
 
                 canvas.addEventListener('mousedown', that.startDrawDown)
             })

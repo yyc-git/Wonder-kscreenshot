@@ -38,6 +38,8 @@
 
         kss.setContainerDocument(_getParent().document);
 
+        kss.setScrollTop(_getParent().document.documentElement.scrollTop);
+
         kss.setCanvasHandler((self, canvas) => {
             canvas.style.top = `${-_getParent().document.documentElement.scrollTop}px`;
 
@@ -75,6 +77,8 @@
 
         kss.setContainerDocument(_getParent().document);
 
+        kss.setScrollTop(0);
+
         kss.setCanvasHandler((self, canvas) => {
             let wholeCanvas = self._containerDocument.createElement("canvas");
 
@@ -89,10 +93,10 @@
             ctx.fillStyle = '#f00';
             ctx.fillRect(0, 0, wholeCanvas.width, wholeCanvas.height);
 
-            let top = Number(_getIMFrame().style.top.slice(0, -2));
+            let top = - _getParent().document.documentElement.scrollTop + Number(_getIMFrame().style.top.slice(0, -2));
             let left = Number(_getIMFrame().style.left.slice(0, -2));
 
-            ctx.drawImage(canvas, 0, document.documentElement.scrollTop, canvas.width, canvas.height, left, top, canvas.width, canvas.height);
+            ctx.drawImage(canvas, 0, document.documentElement.scrollTop, _getIMFrame().width, _getIMFrame().height, left, top, _getIMFrame().width, _getIMFrame().height);
 
             return wholeCanvas;
         });
