@@ -1,6 +1,6 @@
 {
   "name": "wonder-kscreenshot",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "",
   "main": "dist/kss.js",
   "scripts": {
