@@ -1,23 +1,15 @@
 (function () {
-    let _getParent = () => {
-        if (!!window.parent) {
-            return window.parent;
-        }
+    let _imFrameZIndex = null;
 
-        console.warn("window.parent is not exist!");
-        return window;
-    }
+    let _getIMFrameDomain = () => "http://127.0.0.1:8080";
 
     let _getIMFrame = () => {
-        return _getParent().document.querySelector("iframe");
+        return window.document.querySelector("iframe");
     };
 
-    let _getDomWidth = (dom) => {
-        return dom.offsetWidth;
-    }
 
-    let _getDomHeight = (dom) => {
-        return dom.offsetHeight;
+    let _getIMWindow = () => {
+        return document.getElementById("inlineFrameExample").contentWindow;
     }
 
     let _screenshotParent = () => {
@@ -29,8 +21,13 @@
                     return base64;
                 },
                 needDownload: true,
-                endCB: (arg) => {
+                endCB: (base64) => {
                     _getIMFrame().style.display = "block";
+
+                    _getIMWindow().postMessage({
+                        action: "send",
+                        base64
+                    }, _getIMFrameDomain())
                 },
                 cancelCB: (arg) => {
                     _getIMFrame().style.display = "block";
@@ -38,18 +35,18 @@
             }
         );
 
-        kss.setNode(_getParent().document.body);
+        kss.setNode(window.document.body);
 
-        kss.setDocument(_getParent().document);
+        kss.setDocument(window.document);
 
-        kss.setContainer(_getParent().document.body);
+        kss.setContainer(window.document.body);
 
-        kss.setContainerDocument(_getParent().document);
+        kss.setContainerDocument(window.document);
 
-        kss.setScrollTop(_getParent().document.documentElement.scrollTop);
+        kss.setScrollTop(window.document.documentElement.scrollTop);
 
         kss.setCanvasHandler((self, canvas) => {
-            canvas.style.top = `${-_getParent().document.documentElement.scrollTop}px`;
+            canvas.style.top = `${-window.document.documentElement.scrollTop}px`;
 
             return canvas;
         });
@@ -61,66 +58,78 @@
         kss.startScreenShot();
     }
 
-    let _screenshotIM = () => {
-        //65指键盘中的A
-        let kss = new kscreenshot(
-            {
-                key: 65,
-                copyPath: (base64) => {
-                    return base64;
-                },
-                needDownload: true,
-                endCB: (arg) => {
-                },
-                cancelCB: (arg) => {
-                }
-            }
-        );
+    let _appendBlackCanvas = () => {
+        _imFrameZIndex = _getIMFrame().style.zIndex;
+        _getIMFrame().style.zIndex = 1001;
 
-        kss.setNode(document.body);
+        let canvas = document.createElement("canvas");
 
-        kss.setDocument(document);
+        canvas.id = "kscreenshot-black-canvas";
 
-        kss.setContainer(_getParent().document.body);
+        canvas.width = window.innerWidth;
+        canvas.style.width = `${window.innerWidth}px`;
+        canvas.height = window.innerWidth;
+        canvas.style.height = `${window.innerWidth}px`;
 
-        kss.setContainerDocument(_getParent().document);
+        canvas.style.position = "fixed";
+        canvas.style.top = "0px";
+        canvas.style.left = "0px";
+        canvas.style.zIndex = 1000;
 
-        kss.setScrollTop(0);
+        let ctx = canvas.getContext("2d");
 
-        kss.setCanvasHandler((self, canvas) => {
-            let wholeCanvas = self._containerDocument.createElement("canvas");
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            wholeCanvas.width = _getParent().innerWidth;
-            wholeCanvas.style.width = `${_getParent().innerWidth}px`;
-            wholeCanvas.height = _getParent().innerWidth;
-            wholeCanvas.style.height = `${_getParent().innerWidth}px`;
-
-            let ctx = wholeCanvas.getContext("2d");
+        document.body.append(canvas);
 
 
-            ctx.fillStyle = '#f00';
-            ctx.fillRect(0, 0, wholeCanvas.width, wholeCanvas.height);
-
-            let top = - _getParent().document.documentElement.scrollTop + Number(_getIMFrame().style.top.slice(0, -2));
-            let left = Number(_getIMFrame().style.left.slice(0, -2));
-
-            ctx.drawImage(canvas, 0, document.documentElement.scrollTop, _getDomWidth(_getIMFrame()), _getDomWidth(_getIMFrame()), left, top, _getDomWidth(_getIMFrame()), _getDomHeight(_getIMFrame()));
-
-            return wholeCanvas;
-        });
-
-
-        kss.init();
-
-        kss.startScreenShot();
+        _getIMWindow().postMessage({
+            action: "finishAppend"
+        }, _getIMFrameDomain())
     }
 
+    let _removeBlackCanvas = () => {
+        if (_imFrameZIndex === null) {
+            console.error("_imFrameZIndex shouldn't be null");
+            _imFrameZIndex = 0;
+        }
+        _getIMFrame().style.zIndex = _imFrameZIndex;
+
+        let canvas = document.querySelector("#kscreenshot-black-canvas")
+
+        canvas.remove();
+
+        _getIMWindow().postMessage({
+            action: "finishRemove"
+        }, _getIMFrameDomain())
+    }
 
     function startup() {
-        document.querySelector("#button").onclick = (e) => {
-            // _screenshotIM();
-            _screenshotParent();
-        }
+        window.addEventListener("message", (e) => {
+            if (e.origin !== _getIMFrameDomain()) {
+                return;
+            }
+
+            let { from, action } = e.data;
+
+            if (from !== "im") {
+                return;
+            }
+
+            switch (action) {
+                case "screenshotParent":
+                    _screenshotParent();
+                    break;
+                case "append":
+                    _appendBlackCanvas();
+                    break;
+                case "remove":
+                    _removeBlackCanvas();
+                    break;
+            }
+        }, false);
+
     }
 
 
