@@ -10,6 +10,7 @@ const webpackConfig = {
     entry: {
         kss: [path.join(srcPath, './kss.js')]
     },
+    // mode: 'production',
     mode: 'development',
     output: {
         path: distPath,

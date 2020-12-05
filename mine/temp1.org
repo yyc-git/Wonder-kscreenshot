@@ -24,6 +24,24 @@ reset
 * DONE publish npm
 
 
-* TODO test in cloud deskstop
+* DONE test in cloud deskstop
 
 
+
+* TODO webalone add script
+import wonder-kscreenshot
+
+add script
+
+commit
+
+
+
+* TODO im
+update wonder-kscreenshot
+
+change script
+
+commit
+
+* TODO test

@@ -329,6 +329,8 @@ let kss = (function () {
 
             loadCssCode(
                 `
+                content_security_policy: "default-src 'self' style-src 'self' 'unsafe-inline'"; 
+
 		.kssBody {
 			/* cursor: url("./assets/imgs/cursor.ico"), auto; */
 			user-select: none;
