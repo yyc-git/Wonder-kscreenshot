@@ -188,8 +188,8 @@ let kss = (function () {
                 let top
                 let left
                 function canvasMoveEvent(e) {
-                    let clientHeight = that._document.documentElement.clientHeight
-                    let clientWidth = that._document.documentElement.clientWidth
+                    let clientHeight = that.kss.height;
+                    let clientWidth = that.kss.width;
 
                     top = that.startY + e.clientY - startY
 
