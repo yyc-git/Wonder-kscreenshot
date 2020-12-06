@@ -5063,6 +5063,7 @@
 
 
             //Wonder
+            var images = _this.documentElement.getElementsByTagName('img');
             var links = _this.documentElement.getElementsByTagName('link');
             var baseURI = _this.documentElement.baseURI;
             if (baseURI.indexOf('#') > -1) {
@@ -5073,11 +5074,11 @@
             // console.log(_this.documentElement.baseURI, directory)
 
             Array.from(links).forEach(function (ele) {
-                // if (ele.getAttribute("href").indexOf(".css") === -1) {
-                //     return;
-                // }
-
                 ele.href = directory + "/" + ele.getAttribute("href");
+            });
+
+            Array.from(images).forEach(function (ele) {
+                ele.src = directory + "/" + ele.getAttribute("src");
             });
 
 

@@ -34,7 +34,8 @@
 
         kss.setContainerDocument(document);
 
-        kss.setScrollTop(window.document.documentElement.scrollTop);
+        // kss.setScrollTop(window.document.documentElement.scrollTop);
+        kss.setScrollTop(_getIFrame().contentWindow.document.documentElement.scrollTop);
 
         // _getIFrame().contentWindow.document.querySelectorAll("link").forEach((linkDom) => {
         //     // console.log(linkDom.href, linkDom.getAttribute("href"))
@@ -51,7 +52,7 @@
 
 
         kss.setCanvasHandler((self, canvas) => {
-            canvas.style.top = `${- window.document.documentElement.scrollTop}px`;
+            canvas.style.top = `${- _getIFrame().contentWindow.document.documentElement.scrollTop}px`;
 
             return canvas;
         });
