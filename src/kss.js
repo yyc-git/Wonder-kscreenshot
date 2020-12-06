@@ -146,8 +146,9 @@ let kss = (function () {
             that.drawingStatus = 3
 
             if (that.startX === e.clientX && that.startY === e.clientY) {
-                let clientHeight = that._document.documentElement.clientHeight
-                let clientWidth = that._document.documentElement.clientWidth
+                let clientHeight = window.wonder_containerDocument.documentElement.clientHeight
+                let clientWidth = window.wonder_containerDocument.documentElement.clientWidth
+
                 that.startX = 2
                 that.startY = 2
                 that.height = clientHeight - 4
@@ -162,6 +163,12 @@ let kss = (function () {
                 let client = backRightClient(e)
                 let clientX = client[0]
                 let clientY = client[1]
+
+                // console.log(
+                //     "z2:",
+                //     that.kss.width,
+                //     that.kss.height,
+                // )
 
                 that.width = Math.abs(clientX - that.startX)
                 that.height = Math.abs(clientY - that.startY)
@@ -188,8 +195,8 @@ let kss = (function () {
                 let top
                 let left
                 function canvasMoveEvent(e) {
-                    let clientHeight = that.kss.height;
-                    let clientWidth = that.kss.width;
+                    let clientHeight = window.wonder_containerDocument.documentElement.clientHeight
+                    let clientWidth = window.wonder_containerDocument.documentElement.clientWidth
 
                     top = that.startY + e.clientY - startY
 
@@ -586,7 +593,8 @@ let kss = (function () {
         //         })
         html2canvas(that._node, {
             useCORS: true,
-            allowTaint: true
+            allowTaint: true,
+            scale:1
         })
             .then((canvas) => {
                 return this._canvasHandlerFunc === undefined ? canvas : this._canvasHandlerFunc(canvas);

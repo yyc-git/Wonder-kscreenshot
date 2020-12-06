@@ -4,6 +4,8 @@
     }
 
     let _screenshotIM = () => {
+        window.devicePixelRatio = 1;
+
         //65指键盘中的A
         let kss = new kscreenshot(
             {
@@ -14,12 +16,15 @@
                 needDownload: true,
                 endCB: (base64) => {
                     console.log(base64);
-
                 },
                 cancelCB: (arg) => {
                 }
             }
         );
+
+        // console.log(kss.scale, window.devicePixelRatio)
+
+        kss.scale = 1;
 
         kss.setNode(_getIFrame().contentWindow.document.body);
 
